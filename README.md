@@ -5,7 +5,7 @@ Este é um projeto de interface interativa com temática **RPG / Dark Fantasy**,
 O objetivo é simular um "duelo" contra uma carta do jogo Yu-Gi-Yo chamada "Pote da Ganância que possui uma personalidade sarcástica e a mesma lógica de trapaça apresentada nos vídeos do criador.
 
 ## 🔗 Demonstração
-Você pode testar a sua paciência aqui: [[COLE O SEU LINK DO GITHUB.IO AQUI]](https://igorestevam.github.io/jogo-pote-da-ganancia/)
+Você pode testar a sua paciência aqui: https://igorestevam.github.io/jogo-pote-da-ganancia/
 
 ## Inspiração Original
 Este projeto foi desenvolvido como uma homenagem à "regra própria" do **Pote da Ganância** criada pelo **[@zedejoze](https://www.tiktok.com/@zedejoze)**. Nos seus vídeos, ele subverte a regra clássica da carta (que seria apenas sacar 2), transformando o ato em uma sucessão de trapaças acumulativas onde "quem cala consente".

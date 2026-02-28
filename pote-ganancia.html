@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Pote da Ganância Sarcástico</title>
+    <style>
+        :root {
+            --gold: #d4af37;
+            --parchment: #fcf5e5;
+        }
+
+        body {
+            background-color: #0d0d0d;
+            background-image: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+            color: var(--parchment);
+            font-family: 'Crimson Text', serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .rpg-frame {
+            position: relative;
+            background: #1e1e1e;
+            padding: 40px;
+            border: 4px solid var(--gold);
+            border-image: linear-gradient(to bottom, #d4af37, #7a5d0b) 1;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            margin-top: 0;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .dialogue-box {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--gold);
+            margin: 20px 0;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-style: italic;
+            transition: all 0.3s;
+            line-height: 1.4;
+        }
+
+        .image-container {
+            position: relative;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        #pote-img {
+            width: 220px;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .stats-panel {
+            background: #000;
+            border: 1px solid #444;
+            padding: 10px;
+            font-size: 1.4rem;
+            margin: 15px 0;
+            color: #00ff41;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            min-height: 50px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            cursor: pointer;
+            border: 2px solid var(--gold);
+            background: #2a2a2a;
+            color: var(--gold);
+            transition: all 0.3s;
+        }
+
+        button:hover:not(:disabled) {
+            background: var(--gold);
+            color: black;
+            box-shadow: 0 0 15px var(--gold);
+        }
+
+        button:disabled {
+            opacity: 0.3;
+            filter: grayscale(1);
+        }
+
+        #btn-reclamar {
+            border-color: #ff4444;
+            color: #ff4444;
+            display: none;
+        }
+
+        .shake-anim { animation: screen-shake 0.2s; }
+        @keyframes screen-shake {
+            0% { transform: translate(1px, 1px); }
+            50% { transform: translate(-3px, -2px); }
+            100% { transform: translate(0, 0); }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Crimson+Text:ital@1&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="rpg-frame" id="main-frame">
+    <h1>O Pote da Ganância</h1>
+    
+    <div id="display-texto" class="dialogue-box">
+        "Sente o cheiro de cartas novas no ar, duelista?"
+    </div>
+
+    <div class="image-container">
+        <img id="pote-img" src="pote-ganancia.png" alt="Pote da Ganância">
+    </div>
+    
+    <div class="stats-panel">
+        Seu tesouro: <span id="contador">0</span> Cartas
+    </div>
+
+    <div class="btn-container">
+        <button id="btn-acao" onclick="iniciarAcao()">Alimentar Ganância</button>
+        <button id="btn-reclamar" onclick="reclamar()">VOCÊ TRAPACEOU!</button>
+    </div>
+</div>
+
+<script>
+    let cartas = 0;
+    let timer;
+    const textoElement = document.getElementById('display-texto');
+    const contadorElement = document.getElementById('contador');
+    const btnAcao = document.getElementById('btn-acao');
+    const btnReclamar = document.getElementById('btn-reclamar');
+    const mainFrame = document.getElementById('main-frame');
+
+    function atualizarTexto(msg, cor = 'var(--parchment)') {
+        textoElement.style.color = cor;
+        textoElement.innerHTML = msg;
+    }
+
+    function atualizarContador(quantidade) {
+        cartas += quantidade;
+        contadorElement.innerText = cartas;
+        mainFrame.classList.add('shake-anim');
+        setTimeout(() => mainFrame.classList.remove('shake-anim'), 200);
+        
+        const img = document.getElementById('pote-img');
+        img.style.transform = 'scale(1.2) rotate(8deg)';
+        setTimeout(() => img.style.transform = 'scale(1) rotate(0deg)', 200);
+    }
+
+    function iniciarAcao() {
+        btnAcao.disabled = true;
+        atualizarTexto('"Fique tranquilo... vou pegar apenas 2 cartas para você."');
+        
+        // Espera 5 segundos para a primeira trapaça
+        setTimeout(() => {
+            atualizarContador(4);
+            atualizarTexto('"Hehe! Minhas mãos escorregaram... acabei pegando 4!"', "#ff4444");
+            iniciarEsperaReclamacao();
+        }, 3000);
+    }
+
+    function iniciarEsperaReclamacao() {
+        btnReclamar.style.display = 'inline-block';
+        
+        clearTimeout(timer);
+        // Regra dos 7 segundos de silêncio
+        timer = setTimeout(() => {
+            btnReclamar.style.display = 'none';
+            atualizarTexto('"QUEM CALA CONSENTE! Vou pegar mais uma para celebrar seu silêncio!"', "#ff4444");
+            
+            // Espera 5 segundos após a fala de silêncio para sacar
+            setTimeout(() => {
+                atualizarContador(2);
+                atualizarTexto('"Que generoso eu sou! Volte quando quiser mais... favores."');
+                btnAcao.disabled = false;
+            }, 3000);
+        }, 7000);
+    }
+
+    function reclamar() {
+        clearTimeout(timer);
+        atualizarTexto('"Quanta grosseria! Por essa ofensa, pegarei só mais 1 para me desculpar..."');
+        
+        // Espera 5 segundos para a trapaça do "pedir desculpas"
+        setTimeout(() => {
+            atualizarContador(2);
+            atualizarTexto('"Ops, contei errado de novo! Saquei 2! Vai chorar ou vai aceitar?"', "#ff4444");
+            iniciarEsperaReclamacao(); 
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>
